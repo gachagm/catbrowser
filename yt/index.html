@@ -1,0 +1,437 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube - Cat Browser</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #111;
+    }
+
+    .browser {
+      background: white;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    button {
+      border: none;
+      background: #eee;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ddd;
+    }
+
+    .url {
+      flex: 1;
+      background: #f1f1f1;
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #555;
+      border: none;
+      outline: none;
+    }
+
+    .content {
+      max-width: 1100px;
+      margin: 35px auto;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 38px;
+      margin-bottom: 25px;
+    }
+
+    .search {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 35px;
+    }
+
+    .search input {
+      flex: 1;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .search button {
+      background: #ff0000;
+      color: white;
+      padding: 0 25px;
+    }
+
+    .search button:hover {
+      background: #cc0000;
+    }
+
+    .section-title {
+      font-size: 24px;
+      margin-bottom: 18px;
+    }
+
+    .videos {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .video {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.15s;
+    }
+
+    .video:hover {
+      transform: translateY(-3px);
+    }
+
+    .thumbnail {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-info {
+      padding: 13px;
+    }
+
+    .video-title {
+      font-size: 17px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .channel {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .cat {
+      display: block;
+      width: 220px;
+      max-width: 80%;
+      margin: 40px auto 10px;
+      border-radius: 15px;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 25px;
+      color: #666;
+      text-decoration: none;
+    }
+
+    @media (max-width: 800px) {
+      .videos {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 550px) {
+      .content {
+        margin: 15px auto;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .search {
+        flex-direction: column;
+      }
+
+      .search button {
+        padding: 13px;
+      }
+
+      .videos {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #111;
+        color: white;
+      }
+
+      .browser {
+        background: #1b1b1b;
+        border-color: #333;
+      }
+
+      button {
+        background: #292929;
+        color: white;
+      }
+
+      button:hover {
+        background: #3a3a3a;
+      }
+
+      .url {
+        background: #292929;
+        color: #aaa;
+      }
+
+      .search input {
+        background: #222;
+        color: white;
+        border-color: #444;
+      }
+
+      .video {
+        background: #1d1d1d;
+      }
+
+      .channel {
+        color: #aaa;
+      }
+
+      .back {
+        color: #aaa;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="browser">
+    <div class="nav-buttons">
+      <button onclick="history.back()">←</button>
+      <button onclick="history.forward()">→</button>
+      <button onclick="location.reload()">↻</button>
+    </div>
+
+    <input
+      class="url"
+      value="/yt/"
+      onkeydown="if(event.key === 'Enter') location.href='/yt/'"
+    >
+  </div>
+
+  <div class="content">
+
+    <h1>🎬 YouTube</h1>
+
+    <form class="search" onsubmit="searchYouTube(event)">
+      <input
+        id="search"
+        type="text"
+        placeholder="Search YouTube..."
+        autocomplete="off"
+      >
+
+      <button type="submit">
+        Search
+      </button>
+    </form>
+
+    <div class="section-title">
+      ⛏️ Minecraft recommendations
+    </div>
+
+    <div class="videos">
+
+      <a class="video"
+         href="https://www.youtube.com/results?search_query=Minecraft+Survival"
+         target="_blank">
+
+        <img
+          class="thumbnail"
+          src="https://i.ytimg.com/vi/MmB9b5njVbA/hqdefault.jpg"
+          alt="Minecraft Survival"
+        >
+
+        <div class="video-info">
+          <div class="video-title">
+            Minecraft Survival
+          </div>
+
+          <div class="channel">
+            Search Minecraft Survival
+          </div>
+        </div>
+      </a>
+
+
+      <a class="video"
+         href="https://www.youtube.com/results?search_query=Minecraft+Hardcore"
+         target="_blank">
+
+        <img
+          class="thumbnail"
+          src="https://i.ytimg.com/vi/7g3YzR5bJ3E/hqdefault.jpg"
+          alt="Minecraft Hardcore"
+        >
+
+        <div class="video-info">
+          <div class="video-title">
+            Minecraft Hardcore
+          </div>
+
+          <div class="channel">
+            Search Minecraft Hardcore
+          </div>
+        </div>
+      </a>
+
+
+      <a class="video"
+         href="https://www.youtube.com/results?search_query=Minecraft+PvP"
+         target="_blank">
+
+        <img
+          class="thumbnail"
+          src="https://i.ytimg.com/vi/1w9DI7tYw5E/hqdefault.jpg"
+          alt="Minecraft PvP"
+        >
+
+        <div class="video-info">
+          <div class="video-title">
+            Minecraft PvP
+          </div>
+
+          <div class="channel">
+            Search Minecraft PvP
+          </div>
+        </div>
+      </a>
+
+
+      <a class="video"
+         href="https://www.youtube.com/results?search_query=Minecraft+SMP"
+         target="_blank">
+
+        <img
+          class="thumbnail"
+          src="https://i.ytimg.com/vi/0XQwZ4pYp6M/hqdefault.jpg"
+          alt="Minecraft SMP"
+        >
+
+        <div class="video-info">
+          <div class="video-title">
+            Minecraft SMP
+          </div>
+
+          <div class="channel">
+            Search Minecraft SMP
+          </div>
+        </div>
+      </a>
+
+
+      <a class="video"
+         href="https://www.youtube.com/results?search_query=Minecraft+building"
+         target="_blank">
+
+        <img
+          class="thumbnail"
+          src="https://i.ytimg.com/vi/2J9x0K7X0JQ/hqdefault.jpg"
+          alt="Minecraft Building"
+        >
+
+        <div class="video-info">
+          <div class="video-title">
+            Minecraft Building
+          </div>
+
+          <div class="channel">
+            Search Minecraft Building
+          </div>
+        </div>
+      </a>
+
+
+      <a class="video"
+         href="https://www.youtube.com/results?search_query=Minecraft+funny"
+         target="_blank">
+
+        <img
+          class="thumbnail"
+          src="https://i.ytimg.com/vi/5qap5aO4i9A/hqdefault.jpg"
+          alt="Minecraft Funny"
+        >
+
+        <div class="video-info">
+          <div class="video-title">
+            Funny Minecraft
+          </div>
+
+          <div class="channel">
+            Search Minecraft Funny
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <img
+      class="cat"
+      src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif"
+      alt="Cat watching a screen"
+    >
+
+    <a class="back" href="/">
+      ← Back to Cat Browser
+    </a>
+
+  </div>
+
+  <script>
+    function searchYouTube(event) {
+      event.preventDefault();
+
+      const query = document
+        .getElementById("search")
+        .value
+        .trim();
+
+      if (!query) return;
+
+      window.location.href =
+        "https://www.youtube.com/results?search_query=" +
+        encodeURIComponent(query);
+    }
+  </script>
+
+</body>
+</html>
+```
