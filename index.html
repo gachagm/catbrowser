@@ -1,0 +1,420 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+
+  <title>Cat Browser</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+      background: #f7f7f8;
+      color: #222;
+    }
+
+    /* =========================
+       BROWSER BAR
+    ========================= */
+
+    .browser-bar {
+      height: 58px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      padding-top: max(8px, env(safe-area-inset-top));
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid #e5e5e5;
+      position: relative;
+      z-index: 10;
+    }
+
+    .nav-buttons {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    button {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      border-radius: 9px;
+      font-size: 19px;
+      color: #333;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:hover {
+      background: #eeeeef;
+    }
+
+    button:active {
+      background: #e5e5e5;
+      transform: scale(0.94);
+    }
+
+    #url {
+      min-width: 0;
+      flex: 1;
+      height: 38px;
+      border: 1px solid #ddd;
+      border-radius: 11px;
+      padding: 0 13px;
+      font-size: 14px;
+      outline: none;
+      background: #f5f5f6;
+      color: #222;
+    }
+
+    #url:focus {
+      background: #fff;
+      border-color: #aaa;
+    }
+
+    /* =========================
+       HOME
+    ========================= */
+
+    .home {
+      width: 100%;
+      height: calc(100dvh - 58px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      padding-bottom: 80px;
+    }
+
+    .logo {
+      font-size: clamp(28px, 8vw, 36px);
+      font-weight: 600;
+      letter-spacing: -1px;
+      margin-bottom: 24px;
+    }
+
+    .search {
+      width: min(600px, 100%);
+      height: 48px;
+      border: 1px solid #ddd;
+      border-radius: 24px;
+      padding: 0 19px;
+      font-size: 16px;
+      outline: none;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .search:focus {
+      border-color: #aaa;
+    }
+
+    .cat {
+      width: 170px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 14px;
+      margin-top: 32px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    /* =========================
+       WEBSITE
+    ========================= */
+
+    .content {
+      display: none;
+      position: fixed;
+      top: 58px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
+
+      .browser-bar {
+        height: 54px;
+        padding: 7px 8px;
+        gap: 4px;
+      }
+
+      .nav-buttons {
+        gap: 0;
+      }
+
+      button {
+        width: 32px;
+        height: 36px;
+        font-size: 18px;
+      }
+
+      #url {
+        height: 38px;
+        border-radius: 12px;
+        padding: 0 12px;
+        font-size: 14px;
+      }
+
+      .home {
+        height: calc(100dvh - 54px);
+        padding: 20px 18px;
+        padding-bottom: 100px;
+      }
+
+      .logo {
+        margin-bottom: 20px;
+      }
+
+      .search {
+        height: 50px;
+        font-size: 16px;
+        border-radius: 25px;
+      }
+
+      .cat {
+        width: 150px;
+        height: 105px;
+        margin-top: 28px;
+        border-radius: 13px;
+      }
+
+      .content {
+        top: 54px;
+      }
+    }
+
+    /* =========================
+       VERY SMALL PHONES
+    ========================= */
+
+    @media (max-width: 380px) {
+
+      .browser-bar {
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+
+      button {
+        width: 29px;
+      }
+
+      #url {
+        font-size: 13px;
+        padding: 0 10px;
+      }
+
+      .home {
+        padding-bottom: 70px;
+      }
+
+      .cat {
+        width: 135px;
+        height: 95px;
+      }
+    }
+
+    /* =========================
+       DARK MODE SUPPORT
+    ========================= */
+
+    @media (prefers-color-scheme: dark) {
+
+      body {
+        background: #111;
+        color: #eee;
+      }
+
+      .browser-bar {
+        background: rgba(25, 25, 25, 0.96);
+        border-color: #333;
+      }
+
+      button {
+        color: #eee;
+      }
+
+      button:hover {
+        background: #333;
+      }
+
+      #url {
+        background: #222;
+        border-color: #3a3a3a;
+        color: #eee;
+      }
+
+      #url:focus {
+        background: #282828;
+      }
+
+      .search {
+        background: #1e1e1e;
+        border-color: #333;
+        color: #eee;
+      }
+
+      .content {
+        background: #111;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="browser-bar">
+
+    <div class="nav-buttons">
+      <button onclick="goBack()" aria-label="Back">‹</button>
+      <button onclick="goForward()" aria-label="Forward">›</button>
+      <button onclick="reload()" aria-label="Reload">↻</button>
+    </div>
+
+    <input
+      id="url"
+      type="text"
+      autocomplete="off"
+      autocapitalize="none"
+      spellcheck="false"
+      placeholder="Search or enter URL"
+      onkeydown="handleURL(event)"
+    >
+
+  </div>
+
+  <main class="home" id="home">
+
+    <div class="logo">
+      Cat Browser
+    </div>
+
+    <input
+      class="search"
+      id="search"
+      type="search"
+      autocomplete="off"
+      placeholder="Search the web..."
+      onkeydown="handleSearch(event)"
+    >
+
+    <img
+      class="cat"
+      src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"
+      alt="Cat"
+    >
+
+  </main>
+
+  <main class="content" id="content">
+    <iframe id="frame"></iframe>
+  </main>
+
+  <script>
+    const frame = document.getElementById("frame");
+    const home = document.getElementById("home");
+    const content = document.getElementById("content");
+    const url = document.getElementById("url");
+
+    function openPage(address) {
+      if (!address) return;
+
+      if (
+        !address.startsWith("http://") &&
+        !address.startsWith("https://")
+      ) {
+        if (
+          address.includes(".") &&
+          !address.includes(" ")
+        ) {
+          address = "https://" + address;
+        } else {
+          address =
+            "https://www.google.com/search?q=" +
+            encodeURIComponent(address);
+        }
+      }
+
+      url.value = address;
+
+      home.style.display = "none";
+      content.style.display = "block";
+
+      frame.src = address;
+    }
+
+    function handleURL(event) {
+      if (event.key === "Enter") {
+        openPage(url.value.trim());
+        url.blur();
+      }
+    }
+
+    function handleSearch(event) {
+      if (event.key === "Enter") {
+        openPage(event.target.value.trim());
+        event.target.blur();
+      }
+    }
+
+    function goBack() {
+      try {
+        frame.contentWindow.history.back();
+      } catch {
+        history.back();
+      }
+    }
+
+    function goForward() {
+      try {
+        frame.contentWindow.history.forward();
+      } catch {
+        history.forward();
+      }
+    }
+
+    function reload() {
+      if (content.style.display === "block") {
+        frame.src = frame.src;
+      }
+    }
+  </script>
+
+</body>
+</html>
+```
